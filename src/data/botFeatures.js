@@ -59,8 +59,8 @@ export default {
       ]
     },
     {
-      id: "dance-features",
-      name: "舞蹈功能",
+      id: "query",
+      name: "其他查询功能",
       features: [
         {
           id: "ccb",
@@ -176,6 +176,23 @@ export default {
           examples: [
             { 
               image: "/src/assets/images/reward.jpg" 
+            }
+          ]
+        },
+        {
+          id: "contact-author",
+          name: "联系作者",
+          description: "通过以下方式联系作者：",
+          usage: "<br>QQ：947095724<br>邮箱：dale2003@126.com<br>GitHub：<a href='https://github.com/Dale2003'>http://github.com/Dale2003</a><br>个人主页：<a href='http://dale2003.cn'>http://dale2003.cn</a>",
+        },
+        {
+          id: "help-image",
+          name: "帮助图片",
+          description: "查看Bot的使用帮助图片。",
+          usage: "在qq群中发送<code>help</code>或直接在下面查看。<p>图片绘制与设计：筱凌依梦</p>",
+          examples: [
+            { 
+              image: "/src/assets/images/help.png" 
             }
           ]
         }

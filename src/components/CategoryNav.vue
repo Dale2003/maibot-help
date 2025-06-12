@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   categories: {
@@ -36,6 +36,16 @@ const emit = defineEmits(['change']);
 const handleSelect = (categoryId) => {
   emit('change', categoryId);
 };
+
+// 监听路由变化，确保导航选中状态与URL一致
+watch(() => window.location.hash, (newHash) => {
+  if (newHash) {
+    const categoryId = newHash.substring(1); // 移除 # 字符
+    if (props.categories.some(cat => cat.id === categoryId) && categoryId !== props.activeCategory) {
+      emit('change', categoryId);
+    }
+  }
+}, { immediate: true });
 </script>
 
 <style scoped>
@@ -69,6 +79,8 @@ const handleSelect = (categoryId) => {
   position: relative;
 }
 
+/* 移除下划线样式 */
+/*
 :deep(.el-menu-item.is-active::after) {
   content: "";
   position: absolute;
@@ -80,6 +92,7 @@ const handleSelect = (categoryId) => {
   background-color: #8a2be2;
   border-radius: 3px;
 }
+*/
 
 @media (max-width: 768px) {
   .category-nav {

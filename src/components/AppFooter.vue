@@ -1,19 +1,9 @@
-<template>
-  <footer class="app-footer">
+<template>  <footer class="app-footer">
     <div class="footer-content">
       <div class="footer-section">
-        <h3>宇航员猫娘帮助</h3>
-        <p>Bot功能全面指南，方便易用的帮助文档</p>
-      </div>
-      
-      <div class="footer-section links">
-        <h3>快速链接</h3>
-        <ul>
-          <li><a href="#b50">各类b50</a></li>
-          <li><a href="/#query">maimai其他查询功能</a></li>
-          <li><a href="/#interactive-games">整活游戏</a></li>
-          <li><a href="/#support-author">支持作者</a></li>
-        </ul>
+        <h3>宇航员猫娘介绍</h3>
+        <p>宇航员猫娘是一个多功能的舞萌DX查询BOT，包括各种成绩查询、B50计算、特制分数列表、查看定数变化等实用工具，同时也有一些有趣的互动小游戏。</p>
+        <p>宇航员猫娘共有十个官方群，总使用人数1w+。如果你也是舞萌DX爱好者，欢迎尝试宇航员猫娘bot哦！</p>
       </div>
       
       <div class="footer-section">
@@ -54,6 +44,11 @@ const currentYear = computed(() => new Date().getFullYear());
 .footer-section {
   flex: 1;
   min-width: 250px;
+}
+
+/* 宇航员猫娘介绍部分占更多空间 */
+.footer-section:first-child {
+  flex: 2;
 }
 
 .footer-section h3 {

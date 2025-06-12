@@ -8,17 +8,21 @@
       @change="handleCategoryChange" 
     />
     
-    <div class="categories-container">
-      <div 
+    <div class="categories-container">      <div 
         v-for="category in filteredCategories" 
         :key="category.id" 
         :id="category.id"
         class="category-section"
       >
-        <div class="category-header" :style="{ backgroundColor: getCategoryColor(category.name) }">
+        <div class="category-header" 
+          :style="{ backgroundColor: getCategoryColor(category.name) }"
+          @click="toggleCategory(category.id)"
+          :class="{ 'expandable': true, 'expanded': expandedCategories.includes(category.id) }"
+        >
           <h2 class="category-title">{{ category.name }}</h2>
+          <el-icon class="expand-icon"><ArrowDown v-if="!expandedCategories.includes(category.id)" /><ArrowUp v-else /></el-icon>
         </div>
-          <div class="features-list">
+        <div class="features-list" v-show="expandedCategories.includes(category.id)">
           <FeatureItem 
             v-for="feature in filterFeatures(category.features)" 
             :key="feature.id" 
@@ -41,16 +45,23 @@ import HeaderBanner from '../components/HeaderBanner.vue';
 import CategoryNav from '../components/CategoryNav.vue';
 import FeatureItem from '../components/FeatureItem.vue';
 import botData from '../data/botFeatures.js';
+import { ArrowDown, ArrowUp } from '@element-plus/icons-vue';
 
 const categories = ref(botData.categories);
 const activeCategoryId = ref('');
 const searchQuery = ref('');
+const expandedCategories = ref([]);
 
 // 处理分类导航选择
 const handleCategoryChange = (categoryId) => {
   activeCategoryId.value = categoryId;
   
   if (categoryId) {
+    // 展开被点击的分类
+    if (!expandedCategories.value.includes(categoryId)) {
+      expandedCategories.value.push(categoryId);
+    }
+    
     // 滚动到相应的分类部分
     const element = document.getElementById(categoryId);
     if (element) {
@@ -59,10 +70,46 @@ const handleCategoryChange = (categoryId) => {
   }
 };
 
+// 切换分类的展开/折叠状态
+const toggleCategory = (categoryId) => {
+  if (expandedCategories.value.includes(categoryId)) {
+    expandedCategories.value = expandedCategories.value.filter(id => id !== categoryId);
+  } else {
+    expandedCategories.value.push(categoryId);
+  }
+};
+
 // 处理搜索
 const handleSearch = (query) => {
   searchQuery.value = query;
+  
+  // 如果有搜索查询，自动展开所有分类以显示结果
+  if (query) {
+    expandedCategories.value = categories.value.map(category => category.id);
+  }
 };
+
+// 在页面加载时，如果URL中有锚点，展开对应的分类
+watch(() => activeCategoryId.value, (newVal) => {
+  if (newVal && !expandedCategories.value.includes(newVal)) {
+    expandedCategories.value.push(newVal);
+  }
+}, { immediate: true });
+
+// 初始化时检查URL中的hash
+const initFromHash = () => {
+  const hash = window.location.hash.substring(1);
+  if (hash) {
+    const matchingCategory = categories.value.find(cat => cat.id === hash);
+    if (matchingCategory) {
+      activeCategoryId.value = hash;
+      expandedCategories.value.push(hash);
+    }
+  }
+};
+
+// 组件挂载后初始化
+setTimeout(initFromHash, 0);
 
 // 筛选分类
 const filteredCategories = computed(() => {
@@ -132,6 +179,22 @@ const getCategoryColor = (categoryName) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.category-header.expandable:hover {
+  opacity: 0.9;
+}
+
+.expand-icon {
+  font-size: 18px;
+  color: white;
+  transition: transform 0.3s;
+}
+
+.category-header.expanded .expand-icon {
+  transform: rotate(180deg);
 }
 
 .category-title {
@@ -145,6 +208,8 @@ const getCategoryColor = (categoryName) => {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
 }
 
 .no-results {

@@ -197,7 +197,7 @@ onMounted(async () => {
 
 .detail-body h4 {
   color: var(--primary-color);
-  margin: 15px 0 10px;
+  margin: 1px 0 10px;
   font-weight: 600;
 }
 
@@ -214,11 +214,11 @@ onMounted(async () => {
   background-color: #f9f9ff;
   padding: 15px;
   border-radius: 8px;
-  margin-top: 15px;
+  margin-top: 5px;
 }
 
 .examples {
-  margin-top: 15px;
+  margin-top: 5px;
 }
 
 .single-example {
