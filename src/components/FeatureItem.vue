@@ -145,6 +145,7 @@ onMounted(async () => {
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
+  border: none;
 }
 
 .feature-item-container::after {

@@ -30,5 +30,26 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true
-  }
+  },
+  // 增加构建配置
+  build: {
+    assetsInlineLimit: 0, // 禁用小资源内联，确保所有资源都作为文件输出
+    rollupOptions: {
+      output: {
+        // 为静态资源配置自定义命名
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.');
+          let extType = info[info.length - 1];
+          if (/\.(png|jpe?g|gif|svg|webp)$/i.test(assetInfo.name)) {
+            extType = 'img';
+          }
+          return `assets/${extType}/[name]-[hash][extname]`;
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+      },
+    },
+  },
+  // 基础路径配置，对于Vercel部署非常重要
+  base: '/'
 });

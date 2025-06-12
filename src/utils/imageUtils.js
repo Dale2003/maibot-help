@@ -34,36 +34,52 @@ export const getImageUrl = (path) => {
  */
 export const loadImage = async (path) => {
   if (!path) return null;
-    try {
-    // 标准化路径，移除开头的/src
-    let normalizedPath = path;
-    if (path.startsWith('/src/assets/')) {
-      normalizedPath = path.substring(11); // 移除'/src/assets/'
-    } else if (path.startsWith('/src/')) {
-      normalizedPath = path.substring(5); // 移除'/src/'，保留子目录
-    } else if (path.startsWith('/assets/')) {
-      normalizedPath = path.substring(8); // 移除'/assets/'
-    } else if (path.startsWith('/public/')) {
-      // 对于public目录的资源，直接使用根路径
+  
+  try {
+    // 处理绝对URL
+    if (path.startsWith('http')) {
+      return path;
+    }
+    
+    // 如果是public目录下的资源
+    if (path.startsWith('/public/')) {
+      // 在生产环境中，public目录下的资源会被复制到根目录
       return path.replace('/public/', '/');
-    } else if (path.startsWith('/')) {
-      normalizedPath = path.substring(1); // 移除开头的'/'
     }
-      // 对于assets目录下的图片，使用Vite的动态导入功能
-    try {
-      // 尝试直接从assets目录导入
-      // @vite-ignore 添加此注释抑制动态导入警告
-      const imageModule = await import(/* @vite-ignore */ `../assets/${normalizedPath}`);
-      return imageModule.default;
-    } catch (err) {
-      // 如果失败，尝试不添加assets前缀导入
-      // @vite-ignore 添加此注释抑制动态导入警告
-      const imageModule = await import(/* @vite-ignore */ `../${normalizedPath}`);
-      return imageModule.default;
+
+    // 处理assets目录下的资源，使用import.meta.url
+    if (path.includes('/assets/') || path.includes('assets/')) {
+      let normalizedPath = path;
+      
+      // 规范化路径
+      if (path.startsWith('/src/assets/')) {
+        normalizedPath = path.replace('/src/assets/', '');
+      } else if (path.startsWith('/src/')) {
+        normalizedPath = path.replace('/src/', '');
+      } else if (path.startsWith('/assets/')) {
+        normalizedPath = path.replace('/assets/', '');
+      } else if (path.startsWith('assets/')) {
+        normalizedPath = path;
+      }
+      
+      // 对于assets目录的资源，使用import方式导入
+      try {
+        // 尝试使用@作为src别名
+        const imageUrl = new URL(`/src/assets/${normalizedPath}`, import.meta.url).href;
+        return imageUrl;
+      } catch (err) {
+        console.warn('图片路径解析失败，尝试备用方法', err);
+        // 返回相对路径作为备用方案
+        return `/assets/${normalizedPath}`;
+      }
     }
+    
+    // 其他类型的路径，尝试简单处理
+    return path.startsWith('/') ? path : `/${path}`;
   } catch (error) {
     console.error(`图片动态加载失败: ${path}`, error);
-    return path; // 返回原始路径作为后备
+    // 添加时间戳防止缓存
+    return path + '?t=' + new Date().getTime(); // 返回原始路径作为后备，添加时间戳避免缓存问题
   }
 };
 
