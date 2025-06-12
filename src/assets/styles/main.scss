@@ -1,0 +1,124 @@
+@import './variables.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-primary);
+  line-height: 1.6;
+  background-color: var(--bg-color);
+}
+
+a {
+  text-decoration: none;
+  color: var(--secondary-color);
+  transition: color var(--transition-duration) ease;
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+.category-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--border-radius-large);
+  padding: 15px;
+  margin-bottom: 20px;
+  transition: all var(--transition-duration) ease;
+  box-shadow: var(--box-shadow-light);
+  border: 2px solid rgba(200, 210, 255, 0.5);
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.category-title {
+  font-size: 1.5em;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 2px dashed #d8d0ff;
+  padding-bottom: 8px;
+}
+
+.feature-item {
+  background-color: #f0f8ff;
+  border-radius: var(--border-radius-medium);
+  padding: 10px 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 4px solid var(--secondary-color);
+}
+
+.feature-item:hover {
+  background-color: #e1ebff;
+}
+
+.feature-content {
+  padding: 15px;
+  background-color: #f9f9ff;
+  border-radius: var(--border-radius-medium);
+  margin-top: 10px;
+  border: 1px solid #dbe0ff;
+}
+
+.accent-text {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* 页面动画 */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* 代码块样式 */
+code {
+  background-color: #f3f5f9;
+  padding: 2px 4px;
+  border-radius: var(--border-radius-small);
+  color: var(--primary-color);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+pre {
+  background-color: #f3f5f9;
+  padding: 15px;
+  border-radius: var(--border-radius-medium);
+  overflow-x: auto;
+  margin: 15px 0;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
