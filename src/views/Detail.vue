@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Back } from '@element-plus/icons-vue';
 import botData from '../data/botFeatures.js';
@@ -90,9 +90,25 @@ const categoryName = computed(() => {
 // 查找相关功能（同一分类下的其他功能）
 const relatedFeatures = computed(() => {
   if (!category.value) return [];
-  
   return category.value.features.filter(f => f.id !== featureId).slice(0, 3);
 });
+
+// 页面加载时滚动到顶部
+onMounted(() => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// 监听路由参数变化，更新页面内容
+watch(
+  () => route.params,
+  (newParams) => {
+    if (newParams.category && newParams.feature) {
+      // 重新滚动到顶部
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  },
+  { immediate: true }
+);
 
 // 截断文本
 const truncateText = (text, length = 50) => {
@@ -103,7 +119,10 @@ const truncateText = (text, length = 50) => {
 // 导航到相关功能
 const navigateToFeature = (catId, featId) => {
   router.push(`/detail/${catId}/${featId}`);
+  showRelated.value = false; // 点击后隐藏相关功能
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
+
 
 // 返回按钮
 const goBack = () => {

@@ -2,18 +2,18 @@
 export default {
   categories: [
     {
-      id: "winter-b50",
-      name: "冬雪b50",
+      id: "b50",
+      name: "各类b50",
       features: [
         {
           id: "new-b50",
           name: "新曲b50/旧曲b50",
           description: "提供新曲b50和旧曲b50的统计和排行功能。",
-          usage: "使用命令 <code>新曲b50</code> 或 <code>旧曲b50</code> 获取相关信息。",
+          usage: "使用命令 <code>新曲b50</code> 或 <code>旧曲b50</code> 获取相关信息。",          
           examples: [
             { 
               text: "输入 '新曲b50' 可以查看自己的新曲成绩排行榜", 
-              image: "../assets/images/examples/new-b50-example.png" 
+              image: "/src/assets/images/help.png" 
             }
           ],
           notes: [
@@ -76,7 +76,7 @@ export default {
           usage: "使用命令 <code>奶龙</code> 获取相关信息。",
           examples: []
         },
-        {
+        {          
           id: "bwc-selection",
           name: "帮我选",
           description: "帮助玩家从多个选项中随机选择一个。",
@@ -84,7 +84,7 @@ export default {
           examples: [
             { 
               text: "输入 '帮我选 打maimai 打chunithm 睡觉' 会从这三个选项中随机选择一个", 
-              image: "../assets/images/examples/bwc-example.png" 
+              image: "/src/assets/images/examples/bwc-example.png" 
             }
           ]
         },
@@ -164,32 +164,20 @@ export default {
       name: "支持作者",
       features: [
         {
-          id: "wechat-qr",
-          name: "扫码关注",
-          description: "扫描二维码关注作者，获取最新更新和支持。",
-          usage: "使用命令 <code>扫码关注</code> 获取关注二维码。",
-          examples: []
-        },
-        {
-          id: "author-info",
-          name: "作者信息",
-          description: "查看Bot作者的相关信息。",
-          usage: "使用命令 <code>作者信息</code>",
-          examples: []
-        },
-        {
-          id: "update-log",
-          name: "更新日志",
-          description: "查看Bot的最近更新内容和历史更新记录。",
-          usage: "使用命令 <code>更新日志</code>",
-          examples: []
+          id: "join-group",
+          name: "加入群组",
+          description: "加入作者的群组以获取最新信息和交流。",
+          usage: "qq群号：<p>一群：893036661（2000人，已满）</p> <p>二群：934787233（2000人，已满）</p> <p>三群：927929993（1000人，已满）</p> <p>四群：945342047（1000人，未满）</p> <p>五群：533544507（500人，已满）</p> <p>六群：902361264（500人，已满）</p> <p>七群：950940662（500人，已满）</p> <p>八群：1019881172（500人，已满）</p> <p>九群：1025362985（500人，已满）</p> <p>十群：1027762205（500人，已满）</p>",
         },
         {
           id: "donate",
           name: "赞助作者",
           description: "如果您喜欢这个Bot，可以考虑赞助作者以支持其持续开发。",
-          usage: "使用命令 <code>赞助</code> 获取赞助方式。",
-          examples: []
+          examples: [
+            { 
+              image: "/src/assets/images/reward.jpg" 
+            }
+          ]
         }
       ]
     }

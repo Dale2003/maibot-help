@@ -8,7 +8,7 @@ export default {
   site: {
     title: '宇航员猫娘帮助文档',
     description: '全面的功能指南与使用说明',
-    author: '宇航员团队',
+    author: '宇航员Dale',
     version: '1.0.0',
   },
   
@@ -21,8 +21,8 @@ export default {
     
     // 各个分类的颜色
     categoryColors: {
-      'winter-b50': '#8e9efc', // 冬雪b50
-      'dance-features': '#ffa8c5', // 舞蹈功能
+      'b50': '#8e9efc', // b50
+      'query': '#ffa8c5', // 其他查询功能
       'interactive-games': '#66d9e8', // 整活游戏
       'support-author': '#b197fc', // 支持作者
     },
@@ -30,13 +30,13 @@ export default {
   
   // 功能分类和对应的图标
   categories: {
-    'winter-b50': {
+    'b50': {
       icon: 'Calendar',
-      description: '成绩查询与排行功能',
+      description: '各类b50查询功能',
     },
-    'dance-features': {
+    'query': {
       icon: 'Star',
-      description: '舞蹈相关功能与指令',
+      description: 'maimai其他查询功能',
     },
     'interactive-games': {
       icon: 'Game',
@@ -56,8 +56,8 @@ export default {
       icon: 'github',
     },
     {
-      name: '官方网站',
-      url: 'https://example.com',
+      name: '宇航员Dale的主页',
+      url: 'http://dale2003.cn',
       icon: 'link',
     },
   ],

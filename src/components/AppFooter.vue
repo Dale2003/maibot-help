@@ -9,21 +9,21 @@
       <div class="footer-section links">
         <h3>快速链接</h3>
         <ul>
-          <li><a href="#winter-b50">冬雪b50</a></li>
-          <li><a href="#dance-features">舞蹈功能</a></li>
-          <li><a href="#interactive-games">整活游戏</a></li>
-          <li><a href="#support-author">支持作者</a></li>
+          <li><a href="#b50">各类b50</a></li>
+          <li><a href="/#query">maimai其他查询功能</a></li>
+          <li><a href="/#interactive-games">整活游戏</a></li>
+          <li><a href="/#support-author">支持作者</a></li>
         </ul>
       </div>
       
       <div class="footer-section">
         <h3>联系我们</h3>
-        <p>如有问题或建议，请联系Bot维护者</p>
+        <p>如有问题或建议，请联系宇航员Dale，QQ：947095724</p>
       </div>
     </div>
     
     <div class="footer-bottom">
-      <p>© {{ currentYear }} 宇航员团队 | 由 <a href="#" class="accent">宇航员猫娘</a> 提供技术支持</p>
+      <p>© {{ currentYear }} 宇航员Dale | 由 <a href="#" class="accent">宇航员猫娘</a> 提供技术支持</p>
     </div>
   </footer>
 </template>

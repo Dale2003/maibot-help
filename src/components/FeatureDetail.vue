@@ -17,23 +17,32 @@
       </div>
       
       <div class="examples" v-if="feature.examples && feature.examples.length">
-        <h4>示例</h4>
-        <el-carousel 
+        <h4>示例</h4>        <el-carousel 
           :interval="4000" 
           type="card" 
-          height="200px"
+          height="400px"
           v-if="feature.examples.length > 1"
-        >
-          <el-carousel-item v-for="(example, index) in feature.examples" :key="index">
+        ><el-carousel-item v-for="(example, index) in feature.examples" :key="index">
             <div class="example-card">
               <p>{{ example.text }}</p>
               <div v-if="example.image" class="example-image">
                 <el-image 
-                  :src="example.image" 
+                  :src="getImage(example.image)" 
                   :alt="example.text"
-                  fit="cover"
-                  :preview-src-list="[example.image]"
-                />
+                  fit="contain"
+                  :preview-src-list="getPreviewList(feature.examples)"
+                  :initial-index="index"
+                  :preview-teleported="true"
+                  :z-index="3000"
+                  @error="handleImageError"
+                >
+                  <template #error>
+                    <div class="image-error">
+                      <el-icon><Picture /></el-icon>
+                      <p>图片加载失败</p>
+                    </div>
+                  </template>
+                </el-image>
               </div>
             </div>
           </el-carousel-item>
@@ -44,11 +53,23 @@
             <p>{{ example.text }}</p>
             <div v-if="example.image" class="example-image">
               <el-image 
-                :src="example.image" 
+                :src="getImage(example.image)" 
                 :alt="example.text"
-                fit="cover"
-                :preview-src-list="[example.image]"
-              />
+                fit="contain"
+                :preview-src-list="getPreviewList(feature.examples)"
+                :initial-index="index"
+                :preview-teleported="true"
+                :z-index="3000"
+                @error="handleImageError"
+              >
+                <template #error>
+                  <div class="image-error">
+                    <el-icon><Picture /></el-icon>
+                    <p>图片加载失败</p>
+                    <p class="error-path">{{ example.image }}</p>
+                  </div>
+                </template>
+              </el-image>
             </div>
           </div>
         </div>
@@ -69,7 +90,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
+import { Picture } from '@element-plus/icons-vue';
+import { loadImage, getPreviewConfig } from '../utils/imageUtils';
+
+// 图片缓存对象
+const imageCache = ref({});
 
 const props = defineProps({
   feature: {
@@ -79,6 +105,60 @@ const props = defineProps({
   showFooter: {
     type: Boolean,
     default: false
+  }
+});
+
+// 处理图片路径
+const processImagePath = async (path) => {
+  if (!path) return '';
+  
+  // 如果已经缓存了该图片，直接返回
+  if (imageCache.value[path]) {
+    return imageCache.value[path];
+  }
+  
+  console.log('尝试加载图片路径:', path);
+  
+  try {
+    // 动态加载图片
+    const imageUrl = await loadImage(path);
+    // 缓存加载结果
+    imageCache.value[path] = imageUrl;
+    return imageUrl;
+  } catch (error) {
+    console.error('图片加载失败:', path, error);
+    return path;
+  }
+};
+
+// 为模板使用的同步版本
+const getImage = (path) => {
+  return imageCache.value[path] || path;
+};
+
+const handleImageError = (error) => {
+  console.error('图片加载失败:', error);
+};
+
+// 为每个示例创建预览图片列表
+const getPreviewList = (examples) => {
+  if (!examples || !examples.length) return [];
+  return examples
+    .filter(example => example.image)
+    .map(example => getImage(example.image));
+};
+
+// 预览配置
+const previewConfig = getPreviewConfig();
+
+onMounted(async () => {
+  // 预加载示例中的图片
+  if (props.feature.examples) {
+    for (const example of props.feature.examples) {
+      if (example.image) {
+        await processImagePath(example.image);
+      }
+    }
   }
 });
 </script>
@@ -143,15 +223,18 @@ const props = defineProps({
 
 .single-example {
   margin-top: 10px;
+  min-height: 400px; /* 为单个示例提供充足的高度 */
 }
 
 .example-card {
   background-color: #f5f7fa;
   padding: 15px;
   border-radius: 8px;
-  height: 100%;
+  height: auto; /* 使卡片高度自适应内容 */
+  min-height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: visible; /* 允许内容超出边界显示 */
 }
 
 .example-card p {
@@ -164,12 +247,49 @@ const props = defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow: visible; /* 允许内容溢出以完整显示图片 */
+  margin-top: 15px;
+  min-height: 250px; /* 增加高度 */
+  padding: 10px 0;
 }
 
 .example-image .el-image {
-  max-height: 150px;
+  max-width: 100%;
+  max-height: none; /* 移除高度限制，让图片保持原始比例 */
   border-radius: 6px;
+  object-fit: contain;
+  cursor: zoom-in; /* 指示可点击放大 */
+  transition: transform 0.3s;
+}
+
+.example-image .el-image:hover {
+  transform: scale(1.02); /* 鼠标悬停时轻微放大 */
+}
+
+.image-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 100px;
+  background-color: #f5f7fa;
+  border-radius: 6px;
+  color: #909399;
+}
+
+.image-error .el-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.error-path {
+  font-size: 12px;
+  color: #c0c4cc;
+  margin-top: 5px;
+  word-break: break-all;
+  max-width: 90%;
+  text-align: center;
 }
 
 .notes ul {
@@ -189,10 +309,39 @@ const props = defineProps({
 
 :deep(.el-carousel__item) {
   border-radius: 8px;
+  overflow: hidden;
 }
 
 :deep(.el-carousel__item--card) {
-  width: 50%;
+  width: 70%;
+}
+
+:deep(.el-image-viewer__wrapper) {
+  z-index: 2050;
+}
+
+:deep(.el-image-viewer__img) {
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
+  margin: 0 auto; /* 居中显示 */
+}
+
+:deep(.el-image-viewer__actions) {
+  opacity: 0.9;
+  padding: 15px;
+}
+
+:deep(.el-image-viewer__next), 
+:deep(.el-image-viewer__prev) {
+  width: 60px;
+  height: 60px;
+  font-size: 36px;
+  opacity: 0.7;
+}
+
+:deep(.el-image-viewer__close) {
+  font-size: 32px;
 }
 
 @media (max-width: 768px) {
@@ -202,6 +351,15 @@ const props = defineProps({
   
   .detail-header {
     padding: 12px 15px;
+  }
+  
+  .example-image {
+    min-height: 200px;
+    padding: 5px 0;
+  }
+  
+  .el-carousel {
+    height: 350px !important;
   }
 }
 </style>

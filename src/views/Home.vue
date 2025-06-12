@@ -18,8 +18,7 @@
         <div class="category-header" :style="{ backgroundColor: getCategoryColor(category.name) }">
           <h2 class="category-title">{{ category.name }}</h2>
         </div>
-        
-        <div class="features-list">
+          <div class="features-list">
           <FeatureItem 
             v-for="feature in filterFeatures(category.features)" 
             :key="feature.id" 
@@ -100,9 +99,9 @@ const filterFeatures = (features) => {
 // 为每个分类生成不同的颜色
 const getCategoryColor = (categoryName) => {
   const colors = {
-    '冬雪b50': '#8e9efc',
+    '各类b50': '#8e9efc',
+    '其他查询': '#ffa8c5',
     '整活游戏': '#66d9e8',
-    '舞蹈功能': '#ffa8c5',
     '支持作者': '#b197fc'
   };
   

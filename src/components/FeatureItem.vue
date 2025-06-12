@@ -1,6 +1,5 @@
-<template>
-  <div class="feature-item-container" :class="{ expanded: isExpanded }">
-    <div class="feature-header" @click="toggleExpand">
+<template>  <div class="feature-item-container" :class="{ expanded: isExpanded }" @click="navigateToDetail">
+    <div class="feature-header" @click.stop="toggleExpand" style="cursor: pointer;">
       <div class="title-area">
         <span class="feature-name">{{ feature.name }}</span>
         <el-tag v-if="feature.isNew" size="small" type="danger" effect="dark">新</el-tag>
@@ -9,8 +8,7 @@
         <ArrowDown />
       </el-icon>
     </div>
-    
-    <div v-if="isExpanded" class="feature-content">
+      <div v-if="isExpanded" class="feature-content" @click.stop>
       <div class="feature-description" v-if="feature.description">
         <p>{{ feature.description }}</p>
       </div>
@@ -19,20 +17,28 @@
         <h4>使用方法:</h4>
         <div v-html="feature.usage"></div>
       </div>
-      
-      <div class="feature-examples" v-if="hasExamples">
+        <div class="feature-examples" v-if="hasExamples">
         <h4>示例:</h4>
         <p v-if="feature.examples.length === 0">暂无示例</p>
         <div v-else class="example-item" v-for="(example, idx) in feature.examples" :key="idx">
           <p>{{ example.text }}</p>
           <div v-if="example.image" class="example-image">
             <el-image 
-              :src="example.image" 
+              :src="getImage(example.image)" 
               :alt="example.text"
               fit="cover"
               lazy
-              :preview-src-list="[example.image]"
-            />
+              :preview-src-list="[getImage(example.image)]"
+              @error="handleImageError"
+            >
+              <template #error>
+                <div class="image-error">
+                  <el-icon><Picture /></el-icon>
+                  <p>图片加载失败</p>
+                  <p class="error-path">{{ example.image }}</p>
+                </div>
+              </template>
+            </el-image>
           </div>
         </div>
       </div>
@@ -41,7 +47,7 @@
         <el-button 
           type="primary" 
           size="small" 
-          @click="$router.push(`/detail/${categoryId}/${feature.id}`)"
+          @click.stop="navigateToDetail"
         >
           查看详情
         </el-button>
@@ -51,9 +57,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { ArrowDown } from '@element-plus/icons-vue';
+import { ref, computed, onMounted } from 'vue';
+import { ArrowDown, Picture } from '@element-plus/icons-vue';
+import { useRouter } from 'vue-router';
+import { loadImage } from '../utils/imageUtils';
 
+const router = useRouter();
 const props = defineProps({
   feature: {
     type: Object,
@@ -71,8 +80,58 @@ const toggleExpand = () => {
   isExpanded.value = !isExpanded.value;
 };
 
+const navigateToDetail = () => {
+  router.push(`/detail/${props.categoryId}/${props.feature.id}`);
+};
+
 const hasExamples = computed(() => {
   return props.feature.examples && props.feature.examples.length >= 0;
+});
+
+// 图片缓存对象
+const imageCache = ref({});
+
+// 处理图片路径
+const processImagePath = async (path) => {
+  if (!path) return '';
+  
+  // 如果已经缓存了该图片，直接返回
+  if (imageCache.value[path]) {
+    return imageCache.value[path];
+  }
+  
+  console.log('尝试加载图片路径:', path);
+  
+  try {
+    // 动态加载图片
+    const imageUrl = await loadImage(path);
+    // 缓存加载结果
+    imageCache.value[path] = imageUrl;
+    return imageUrl;
+  } catch (error) {
+    console.error('图片加载失败:', path, error);
+    return path;
+  }
+};
+
+// 为模板使用的同步版本
+const getImage = (path) => {
+  return imageCache.value[path] || path;
+};
+
+const handleImageError = (error) => {
+  console.error('图片加载失败:', error);
+};
+
+onMounted(async () => {
+  // 预加载示例中的图片
+  if (props.feature.examples) {
+    for (const example of props.feature.examples) {
+      if (example.image) {
+        await processImagePath(example.image);
+      }
+    }
+  }
 });
 </script>
 
@@ -84,10 +143,35 @@ const hasExamples = computed(() => {
   margin-bottom: 15px;
   overflow: hidden;
   transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.feature-item-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(142, 158, 252, 0.05);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.feature-item-container:hover::after {
+  opacity: 1;
 }
 
 .feature-item-container:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.feature-item-container:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .feature-item-container.expanded {
@@ -175,6 +259,32 @@ const hasExamples = computed(() => {
 .example-image img {
   max-width: 100%;
   border-radius: 4px;
+}
+
+.image-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 100px;
+  background-color: #f5f7fa;
+  border-radius: 6px;
+  color: #909399;
+}
+
+.image-error .el-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.error-path {
+  font-size: 12px;
+  color: #c0c4cc;
+  margin-top: 5px;
+  word-break: break-all;
+  max-width: 90%;
+  text-align: center;
 }
 
 .feature-footer {
