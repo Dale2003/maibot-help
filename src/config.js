@@ -21,10 +21,14 @@ export default {
     
     // 各个分类的颜色
     categoryColors: {
-      'b50': '#8e9efc', // b50
-      'query': '#ffa8c5', // 其他查询功能
-      'interactive-games': '#66d9e8', // 整活游戏
-      'support-author': '#b197fc', // 支持作者
+      'b50': '#8e9efc',
+      'scores': '#f08fb2',
+      'songs': '#66c7d9',
+      'progress': '#7bb7e8',
+      'account': '#8fc98f',
+      'games': '#f2a66f',
+      'taiko': '#e78686',
+      'support-author': '#b197fc',
     },
   },
   
@@ -32,15 +36,31 @@ export default {
   categories: {
     'b50': {
       icon: 'Calendar',
-      description: '各类b50查询功能',
+      description: 'B50、B40 与各种筛选和算法变体',
     },
-    'query': {
+    'scores': {
       icon: 'Star',
-      description: 'maimai其他查询功能',
+      description: '成绩列表、统计分析与推分建议',
     },
-    'interactive-games': {
+    'songs': {
+      icon: 'Search',
+      description: '曲目、谱面、别名与定数表查询',
+    },
+    'progress': {
+      icon: 'DataAnalysis',
+      description: '完成进度、段位与赛事功能',
+    },
+    'account': {
+      icon: 'Setting',
+      description: 'OAuth 授权、数据导出与常用工具',
+    },
+    'games': {
       icon: 'Game',
       description: '趣味互动游戏功能',
+    },
+    'taiko': {
+      icon: 'Bell',
+      description: '太鼓之达人查询与成绩功能',
     },
     'support-author': {
       icon: 'User',
