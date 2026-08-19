@@ -125,30 +125,39 @@ const filteredCategories = computed(() => {
     }
     
     // 检查该分类中的功能是否匹配
-    return category.features.some(feature => {
-      return feature.name.toLowerCase().includes(query) || 
-        (feature.description && feature.description.toLowerCase().includes(query));
-    });
+    return category.features.some(feature => featureMatches(feature, query));
   });
 });
+
+const featureMatches = (feature, query) => {
+  const searchable = [
+    feature.name,
+    feature.description,
+    feature.usage,
+    ...(feature.notes || []),
+    ...(feature.examples || []).map(example => example.text)
+  ];
+  return searchable.some(value => value && value.toLowerCase().includes(query));
+};
 
 // 筛选功能
 const filterFeatures = (features) => {
   if (!searchQuery.value) return features;
   
   const query = searchQuery.value.toLowerCase();
-  return features.filter(feature => {
-    return feature.name.toLowerCase().includes(query) || 
-      (feature.description && feature.description.toLowerCase().includes(query));
-  });
+  return features.filter(feature => featureMatches(feature, query));
 };
 
 // 为每个分类生成不同的颜色
 const getCategoryColor = (categoryName) => {
   const colors = {
-    '各类b50': '#8e9efc',
-    '其他查询': '#ffa8c5',
-    '整活游戏': '#66d9e8',
+    'B50 与 Rating': '#8e9efc',
+    '成绩与分析': '#f08fb2',
+    '曲目与谱面': '#66c7d9',
+    '进度、段位与赛事': '#7bb7e8',
+    '账号、数据与工具': '#8fc98f',
+    '游戏与整活': '#f2a66f',
+    '太鼓之达人': '#e78686',
     '支持作者': '#b197fc'
   };
   
