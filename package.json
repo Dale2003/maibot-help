@@ -1,29 +1,17 @@
 {
   "name": "maibot-help",
-  "version": "1.0.0",
-  "description": "帮助文档网页，展示Bot功能",
-  "main": "index.js",
+  "version": "2.0.0",
+  "private": true,
+  "description": "宇航员猫娘 Bot 的 VitePress 使用文档",
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "vitepress dev .",
+    "start": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview ."
   },
-  "keywords": [
-    "bot",
-    "help",
-    "documentation"
-  ],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@element-plus/icons-vue": "^2.3.1",
-    "element-plus": "^2.3.4",
-    "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
-  },
+  "keywords": ["maimai", "nonebot", "vitepress", "documentation"],
+  "license": "MIT",
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.1.0",
-    "sass": "^1.62.1",
-    "vite": "^4.3.5"
+    "vitepress": "^1.6.4"
   }
 }
