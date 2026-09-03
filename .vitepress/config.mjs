@@ -9,7 +9,7 @@ export default defineConfig({
   srcExclude: ['README.md'],
   head: [
     ['meta', { name: 'theme-color', content: '#7567f0' }],
-    ['link', { rel: 'icon', href: '/favicon.svg' }]
+    ['link', { rel: 'icon', type: 'image/png', href: '/images/meow-logo.png' }]
   ],
   themeConfig: {
     logo: '/images/meow-logo.png',
