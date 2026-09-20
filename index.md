@@ -33,6 +33,10 @@ features:
     title: 进度与段位
     details: 查段位曲、段位历史、等级进度、版本牌、万花筒与棱镜塔都能查。
     link: /commands/progress
+  - icon: 🗺️
+    title: 地图与收藏品
+    details: 搜索地图、查看奖励路线与获取距离，按收藏品 ID、名称或中英文别名反查来源。
+    link: /commands/maps
   - icon: 🎮
     title: 群聊小游戏
     details: 猜歌、Wordle、Handle、Maidle、日麻练习和更多轻量互动。

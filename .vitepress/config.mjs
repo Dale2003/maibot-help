@@ -23,6 +23,7 @@ export default defineConfig({
           { text: 'B50 与 Rating', link: '/commands/b50' },
           { text: '成绩与分析', link: '/commands/scores' },
           { text: '曲目与谱面', link: '/commands/songs' },
+          { text: '地图与收藏品', link: '/commands/maps' },
           { text: '进度与段位', link: '/commands/progress' },
           { text: '工具与小游戏', link: '/commands/tools-games' },
           { text: '太鼓之达人', link: '/commands/taiko' }
@@ -45,6 +46,7 @@ export default defineConfig({
           { text: 'B50 与 Rating', link: '/commands/b50' },
           { text: '成绩与分析', link: '/commands/scores' },
           { text: '曲目与谱面', link: '/commands/songs' },
+          { text: '地图与收藏品', link: '/commands/maps' },
           { text: '进度与段位', link: '/commands/progress' }
         ]
       },
