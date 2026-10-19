@@ -22,6 +22,7 @@ export default defineConfig({
         items: [
           { text: 'B50 与 Rating', link: '/commands/b50' },
           { text: '成绩与分析', link: '/commands/scores' },
+          { text: '选曲与练习', link: '/commands/practice' },
           { text: '曲目与谱面', link: '/commands/songs' },
           { text: '地图与收藏品', link: '/commands/maps' },
           { text: '进度与段位', link: '/commands/progress' },
@@ -45,6 +46,7 @@ export default defineConfig({
         items: [
           { text: 'B50 与 Rating', link: '/commands/b50' },
           { text: '成绩与分析', link: '/commands/scores' },
+          { text: '选曲与练习', link: '/commands/practice' },
           { text: '曲目与谱面', link: '/commands/songs' },
           { text: '地图与收藏品', link: '/commands/maps' },
           { text: '进度与段位', link: '/commands/progress' }
