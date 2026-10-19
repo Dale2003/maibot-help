@@ -19,7 +19,7 @@ hero:
 features:
   - icon: 📈
     title: B50 与成绩分析
-    details: 新版 B50 支持组合筛选，分数列表、底力与推分建议也都整理在一处。
+    details: 新版 B50 支持组合筛选，也能按历代版本模拟 B50；分数列表、底力与推分建议都在这里。
     link: /commands/b50
   - icon: 🔎
     title: 曲目与谱面
@@ -31,7 +31,7 @@ features:
     link: /guide/prober
   - icon: 🏁
     title: 进度与段位
-    details: 查段位曲、段位历史、等级进度、版本牌、万花筒与棱镜塔都能查。
+    details: 等级进度、国服与日服牌子、历代段位、万花筒与棱镜塔都能查。
     link: /commands/progress
   - icon: 🗺️
     title: 地图与收藏品
@@ -39,7 +39,7 @@ features:
     link: /commands/maps
   - icon: 🎮
     title: 群聊小游戏
-    details: 猜歌、Wordle、Handle、Maidle、日麻练习和更多轻量互动。
+    details: 猜歌、Wordle、Handle、Maidle、日麻练习，还有表情包与图片工具。
     link: /commands/tools-games
   - icon: 💬
     title: 联系与反馈
